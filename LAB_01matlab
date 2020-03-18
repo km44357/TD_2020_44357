@@ -1,0 +1,51 @@
+clc
+close
+clear
+
+
+
+a = 7;
+b = 5;
+c = 3;
+
+
+x = @(t) 7*t*t + 5*t + 3;
+
+D = b*b - 4*a*c;
+
+if(D > 0)
+    t1 = (-b+sqrt(D))/2*a
+    t2 = (-b-sqrt(D))/2*a
+elseif(D == 0)
+    t0 = -b/2*a
+else
+    disp('brak miejsc zerowych')
+end
+
+%plot(t,x,'.')
+%fpx = fplot(@(t) x(t),[-10,10])
+%t = 0:1/22050:1;
+
+y = @(t) 2*(x(t))^2 + 12*cos(t);
+
+fpy = fplot(@(t) y(t),[0,1])
+
+z = @(t) sin(2*pi * 7 * t) * (x(t)) - 0.2*log10(abs(y(t)) + pi);
+
+fpz = fplot(@(t) z(t),[0,1])
+
+u = @(t) sqrt(abs(y(t)*y(t)*z(t))) - 1.8*sin(0.4*t*z(t)*x(t))
+
+fpu = fplot(@(t) u(t),[0,1])
+
+%v = vt(t);
+
+%v = piecewise(t >= 0 & t < 0.22, (1-7*t)*sin((2*pi*t*10)/(t + 0.04)), t >= 0.22 & t < 0.7, 0.63*t*sin(125*t), t >= 0.7 & t <= 1.0, t^(-0.662) + 0.77*sin(8*t));
+
+%fpv = fplot(@(t) v(t),[0,1])
+
+syms n t
+N = 75;
+p = symsum((cos(12*t*n^2) + cos(16*t * n))/n^2, n, 1, N);
+
+fpp = fplot(@(t) p(t),[0,1])
