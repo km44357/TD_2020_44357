@@ -8,8 +8,10 @@ a = 7;
 b = 5;
 c = 3;
 
+t = -10:1/100:100;
 
-x = @(t) 7*t*t + 5*t + 3;
+x = 7.*t.^2 + 5.*t + 3;
+
 
 D = b*b - 4*a*c;
 
@@ -22,22 +24,34 @@ else
     disp('brak miejsc zerowych')
 end
 
-%plot(t,x,'.')
-%fpx = fplot(@(t) x(t),[-10,10])
-%t = 0:1/22050:1;
+%px = plot(t,x)
+%px.LineStyle = 'None';
+%px.Marker = '.';
+%px
+t = 0:1/22050:1;
 
-y = @(t) 2*(x(t))^2 + 12*cos(t);
+y = 2.*(7.*t.^2 + 5.*t + 3).^2 + 12.*cos(t);
 
-fpy = fplot(@(t) y(t),[0,1])
+%py = plot(t,y);
+%py.LineStyle = 'None';
+%py.Marker = '.';
+%py
 
-z = @(t) sin(2*pi * 7 * t) * (x(t)) - 0.2*log10(abs(y(t)) + pi);
+z = sin(2*pi * 7 .* t) .* (7.*t.^2 + 5.*t + 3) - 0.2.*log10(abs(2.*(7.*t.^2 + 5.*t + 3).^2 + 12.*cos(t)) + pi);
 
-fpz = fplot(@(t) z(t),[0,1])
+%fpz = fplot(@(t) z(t),[0,1])
+%pz = plot(t,z);
+%pz.LineStyle = 'None';
+%pz.Marker = '.';
+%pz
 
-u = @(t) sqrt(abs(y(t)*y(t)*z(t))) - 1.8*sin(0.4*t*z(t)*x(t))
+u =  sqrt(abs(((2.*(7.*t.^2 + 5.*t + 3).^2 + 12.*cos(t)).^2).*(sin(2*pi * 7 .* t) .* (7.*t.^2 + 5.*t + 3) - 0.2.*log10(abs(2.*(7.*t.^2 + 5.*t + 3).^2 + 12.*cos(t)) + pi)))) - 1.8.*sin(0.4*t.*(sin(2*pi * 7 .* t) .* (7.*t.^2 + 5.*t + 3) - 0.2.*log10(abs(2.*(7.*t.^2 + 5.*t + 3).^2 + 12.*cos(t)) + pi)).*(7.*t.^2 + 5.*t + 3));
 
-fpu = fplot(@(t) u(t),[0,1])
-
+%fpu = fplot(@(t) u(t),[0,1])
+%pu = plot(t,u);
+%pu.LineStyle = 'None';
+%pu.Marker = '.';
+%pu
 %v = vt(t);
 
 %v = piecewise(t >= 0 & t < 0.22, (1-7*t)*sin((2*pi*t*10)/(t + 0.04)), t >= 0.22 & t < 0.7, 0.63*t*sin(125*t), t >= 0.7 & t <= 1.0, t^(-0.662) + 0.77*sin(8*t));
