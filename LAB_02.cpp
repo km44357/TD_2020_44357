@@ -15,6 +15,7 @@ int main()
 	double pi = 3.14;
 	double th = 3 * pi;
 	double dts = 1.0 / 500;
+	double dts2 = 1.0 / 1000;
 	
 	double t;
 	
@@ -109,7 +110,7 @@ int main()
 
 	for (int i = 0; i < 7000; i++)
 	{
-		t = i * dts;
+		t = i * dts2;
 		outfile5 << t << "\n";
 
 
@@ -118,4 +119,6 @@ int main()
 
 	return 0;
 }
+
+
 
