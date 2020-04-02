@@ -1,1 +1,38 @@
 
+clear
+close
+clc
+
+load('time.txt');
+load('data.txt');
+load('dataq1.txt');
+load('dataq2.txt');
+load('time2.txt');
+
+% figure
+% p1 = plot(time,data);
+% %p1.LineStyle = 'None';
+% p1.Marker = '.';
+% title('Wykres 1 A=1,f=5,tk=7')
+% xlabel('t - czas')
+% ylabel('A*sin(2*pi*f*t+th)')
+% p1
+
+
+% figure
+% p2 = plot(time,dataq1);
+% %p2.LineStyle = 'None';
+% p2.Marker = '.';
+% title('Wykres 2 A=1,f=5,tk=7')
+% xlabel('t - czas')
+% ylabel('A*sin(2*pi*f*t+th)')
+% p2
+
+figure
+p3 = plot(time2,dataq2);
+%p3.LineStyle = 'None';
+p3.Marker = '.';
+title('Wykres 3 A=1,f=5,tk=7')
+xlabel('t - czas')
+ylabel('A*sin(2*pi*f*t+th)')
+p3
