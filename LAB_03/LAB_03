@@ -9,7 +9,7 @@
 using namespace std;
 
 double pi = 3.14159265359;
-double dts = 1.0;
+double dts = 1.0/50;
 
 
 class DFT
