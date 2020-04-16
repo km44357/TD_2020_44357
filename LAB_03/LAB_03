@@ -2,103 +2,205 @@
 
 #include "pch.h"
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <cmath>
 
 using namespace std;
 
 double pi = 3.14159265359;
+double dts = 1.0;
+
 
 class DFT
 {
 	public:
 
-	vector <double> src_r;
-	vector <double> src_i;
-	vector <double> dft_r;
-	vector <double> dft_i;
+	struct cx{
+		double real;
+		double imag;
+	};
 	
-	
-		void sig1();
+		vector<cx> SRC;
+		vector<cx> X;
+		vector<cx> IX;
+
+		vector<double> M;
+		vector<double> Mp;
+
+		void make_SRC1();
 		//void make_src2();
 
-		void dft();
-		void va();
+		void calc_DFT();
+		void calc_WA();
+		void calc_IDFT();
+
+		void TEST();
 };
 
-void DFT::sig1()
+void DFT::make_SRC1()
 {
 	int A = 1;
 	int f = 5;
 	
-	double th = 3 * pi;
-	double dts = 1.0 / 50;
+	double si = 3 * pi;
+	//double dts = 1.0 / 50;
+	//double dts = 1.0;
+
+	double dk = 3 * 5 * 7 / dts;
 
 	double t;
 
 	vector <double> temp;
 	
-	src_r.clear();
-	src_i.clear();
-
-	
+	SRC.clear();
 
 	double x;
 
-	for (int i = 0; i < 5250; i++)
-	{
-		t = i * dts;
-
-		x = double(A * sin(2 * pi*f*t + th)) + 1;
-		temp.push_back(x);
-		
-	}
-
 	double y;
 
-	for (int i = 0; i < 5250; i++) {
-		y = floor(temp[i] * pow(2, 8));
+	ofstream outfile;
+	outfile.open("data.txt", ios::trunc | ios::out);
 
-		src_r.push_back(y);
-		src_i.push_back(0);
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+
+		x = double(A * sin(2 * pi*f*t + si));
+		//y = floor(x * pow(2, 8));
+
+		outfile << (double)x << "\n";
+		//cout << x << endl;
+
+		SRC.push_back({ x, 0 });
+		
 	}
+
+	outfile.close();
 }
 
-void DFT::dft()
+void DFT::calc_DFT()
 {
-	dft_r.clear();
-	dft_i.clear();
-
-	int n = src_r.size();
+	X.clear();
 	
+
+	int n = SRC.size();
+
 	double re, im;
 
-
 	for (int i = 0; i < n; i++) {
-		
+
 		re = 0;
 		im = 0;
 		for (int j = 0; j < n; j++)
 		{
 
-				re += src_r[j] * (cos((2 * pi / n) * i * j)) + src_i[j] * (sin((2 * pi / n) * i * j));
-			
-				im += src_r[j] * (-sin((2 * pi / n) * i * j)) + src_i[j] * (cos((2 * pi / n) * i * j));
+			re += SRC[j].real * (cos((2 * pi / n) * i * j)) + SRC[j].imag * (sin((2 * pi / n) * i * j));
+
+			im += SRC[j].real * (-sin((2 * pi / n) * i * j)) + SRC[j].imag * (cos((2 * pi / n) * i * j));
 
 		}
-			dft_r.push_back(re);
-			dft_i.push_back(im);
-			
+
+		X.push_back({ re, im });
+		
+	}
+}
+
+void DFT::calc_WA() {
+
+	double m, mp;
+
+	int n = X.size();
+
+	ofstream outfile1;
+	outfile1.open("dataM.txt", ios::trunc | ios::out);
+	
+	for (int i = 0; i < n; i++) {
+
+		m = sqrt(pow(X[i].real, 2) + pow(X[i].imag, 2));
+		mp = 10 * log10(m);
+
+		outfile1 << (double)mp << "\n";
+
+		//M.push_back(m);
+		Mp.push_back(mp);
+	}
+
+	outfile1.close();
+
+	ofstream outfile2;
+	outfile2.open("freqM.txt", ios::trunc | ios::out);
+
+	double fk;
+	double fsn = dts / (double)n;
+
+	for (int k = 0; k < n; k++) {
+
+		 fk = double( k * fsn);
+
+		outfile2 << (double)fk << "\n";
+
+		
+	}
+
+	outfile2.close();
 
 }
+
+void DFT::calc_IDFT()
+{
+	IX.clear();
+
+
+	int n = X.size();
+
+	double re, im;
+
+	for (int i = 0; i < n; i++) {
+
+		re = 0;
+		im = 0;
+		for (int j = 0; j < n; j++)
+		{
+
+			re += X[j].real * (cos((2 * pi / n) * j * i)) - X[j].imag * (sin((2 * pi / n) * j * i));
+
+			im += X[j].real * (sin((2 * pi / n) * j * i)) + X[j].imag * (cos((2 * pi / n) * j * i));
+		}
+		re /= n;
+		im /= n;
+
+		IX.push_back({ re, im });
+
+	}
+}
+
+void DFT::TEST() {
+
+	int n = X.size();
+	double sum1, sum2;
+
+	for (int i = 0; i < n; i++) {
+
+		cout << SRC[i].real << "  " << SRC[i].imag << "  " << IX[i].real << "  " << IX[i].imag << endl;
+
+	}
+
+}
+
 
 int main() 
 {
 
-	DFT dane1;
+	DFT dane;
 
-	dane1.sig1();
-	dane1.dft();
-	
+	dane.make_SRC1();
+	dane.calc_DFT();
+	dane.calc_WA();
+
+	dane.calc_IDFT();
+
+	dane.TEST();
+
 	return 0;
 }
