@@ -132,7 +132,7 @@ void DFT::calc_WA() {
 	outfile2.open("freqM.txt", ios::trunc | ios::out);
 
 	double fk;
-	double fsn = dts / (double)n;
+	double fsn = (1/dts) / (double)n;
 
 	for (int k = 0; k < n; k++) {
 
