@@ -9,8 +9,18 @@
 using namespace std;
 
 double pi = 3.14159265359;
-double dts = 1.0/50;
 
+/*
+	double fx = double(7 * pow(t, 2) + 5 * t + 3);
+	double fy = double(2 * pow(fx,2) + 12 * cos(t));
+	double fz = double(sin(2 * pi * 7 * t) * fx - 0.2 * log10(abs(fy) + pi));
+	double fu = double(sqrt(abs(fy * fy * fz)) - 1.8 * sin(0.4 * t * fz * fx));
+	double fv1 = double((1 - 7 * t) * sin((2 * pi * t * 10)/(t + 0.04)));
+	double fv2 = double(0.63 * t * sin(125 * t));
+	double fv3 = double(pow(t, -0.662) + 0.77 * sin(8 * t));
+	int i = 0;
+	double fp = double((cos(12 * t * pow(i, 2)) + cos(16 * t * i)) / pow(i, 2));
+*/
 
 class DFT
 {
@@ -20,7 +30,8 @@ class DFT
 		double real;
 		double imag;
 	};
-	
+		double dts;
+
 		vector<cx> SRC;
 		vector<cx> X;
 		vector<cx> IX;
@@ -29,7 +40,11 @@ class DFT
 		vector<double> Mp;
 
 		void make_SRC1();
-		//void make_src2();
+		void make_SRC2();
+		void make_SRC3();
+		void make_SRC4();
+		void make_SRC5();
+		void make_SRC6();
 
 		void calc_DFT();
 		void calc_WA();
@@ -44,12 +59,11 @@ void DFT::make_SRC1()
 	int f = 5;
 	
 	double si = 3 * pi;
-	//double dts = 1.0 / 50;
-	//double dts = 1.0;
 
-	double dk = 3 * 5 * 7 / dts;
+	this->dts = 1.0/4.0 ;
+	double dk = 3*5*7 / dts;
 
-	double t;
+	double t = 0;
 
 	vector <double> temp;
 	
@@ -60,23 +74,257 @@ void DFT::make_SRC1()
 	double y;
 
 	ofstream outfile;
-	outfile.open("data.txt", ios::trunc | ios::out);
+	outfile.open("data1.txt", ios::trunc | ios::out);
 
 	for (int i = 0; i < dk; i++) {
 
 		t = i * dts;
 
 		x = double(A * sin(2 * pi*f*t + si));
-		//y = floor(x * pow(2, 8));
 
 		outfile << (double)x << "\n";
-		//cout << x << endl;
 
 		SRC.push_back({ x, 0 });
 		
 	}
 
 	outfile.close();
+
+	ofstream outfile2;
+	outfile2.open("time1.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;		
+		outfile2 << (double)t << "\n";		
+	}
+
+	outfile2.close();
+}
+
+void DFT::make_SRC2()
+{
+	int A = 1;
+	int f = 5;
+
+	double si = 3 * pi;
+	
+	this->dts = 1.0 / 2050;
+	double dk = 1 / dts;
+
+	double t = 0;
+
+	vector <double> temp;
+
+	SRC.clear();
+
+	double x;
+
+	ofstream outfile2;
+	outfile2.open("data2.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+
+		double fx = double(7 * pow(t, 2) + 5 * t + 3);
+		double fy = double(2 * pow(fx, 2) + 12 * cos(t));
+
+		t = i * dts;
+
+		x = fy;		
+
+		outfile2 << (double)x << "\n";		
+
+		SRC.push_back({ x, 0 });
+	}
+
+	outfile2.close();
+	
+}
+
+void DFT::make_SRC3()
+{
+	int A = 1;
+	int f = 5;
+
+	double si = 3 * pi;
+	
+	double dts = 1.0 / 22050;
+	double dk = 1 / dts;
+
+	double t = 0;
+
+	vector <double> temp;
+
+	SRC.clear();
+
+	double x;
+
+	double y;
+
+	ofstream outfile3;
+	outfile3.open("data3.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+
+		double fx = double(7 * pow(t, 2) + 5 * t + 3);
+		double fy = double(2 * pow(fx, 2) + 12 * cos(t));
+		double fz = double(sin(2 * pi * 7 * t) * fx - 0.2 * log10(abs(fy) + pi));
+
+		t = i * dts;
+
+		x = fz;
+
+		outfile3 << (double)x << "\n";
+
+
+		SRC.push_back({ x, 0 });
+	}
+
+	outfile3.close();
+}
+
+void DFT::make_SRC4()
+{
+	int A = 1;
+	int f = 5;
+
+	double si = 3 * pi;
+
+	double dts = 1.0 / 22050;
+	double dk = 1 / dts;
+
+	double t = 0;
+
+	vector <double> temp;
+
+	SRC.clear();
+
+	double x;
+
+	double y;
+
+	ofstream outfile3;
+	outfile3.open("data3.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+
+		double fx = double(7 * pow(t, 2) + 5 * t + 3);
+		double fy = double(2 * pow(fx, 2) + 12 * cos(t));
+		double fz = double(sin(2 * pi * 7 * t) * fx - 0.2 * log10(abs(fy) + pi));
+		double fu = double(sqrt(abs(fy * fy * fz)) - 1.8 * sin(0.4 * t * fz * fx));
+
+		t = i * dts;
+
+		x = fu;
+
+		outfile3 << (double)x << "\n";
+
+		SRC.push_back({ x, 0 });
+	}
+
+	outfile3.close();
+}
+
+void DFT::make_SRC5()
+{
+	int A = 1;
+	int f = 5;
+
+	double si = 3 * pi;
+
+	double dts = 1.0 / 22050;
+	double dk = 1 / dts;
+
+	double t = 0;
+
+	vector <double> temp;
+
+	SRC.clear();
+
+	double x;
+
+	double y;
+
+	ofstream outfile3;
+	outfile3.open("data3.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+
+		double fx = double(7 * pow(t, 2) + 5 * t + 3);
+		double fy = double(2 * pow(fx, 2) + 12 * cos(t));
+		double fz = double(sin(2 * pi * 7 * t) * fx - 0.2 * log10(abs(fy) + pi));
+		double fu = double(sqrt(abs(fy * fy * fz)) - 1.8 * sin(0.4 * t * fz * fx));
+						
+		t = i * dts;
+
+		if ( 0<=t && t < 0.22) {
+			double fv1 = double((1 - 7 * t) * sin((2 * pi * t * 10) / (t + 0.04)));
+			x = fv1;
+		}
+		if (0.22 <= t && t < 0.7) {
+			double fv2 = double(0.63 * t * sin(125 * t));
+			x = fv2;
+		}
+		if (0.7 <= t && t <= 1.0) {
+			double fv3 = double(pow(t, -0.662) + 0.77 * sin(8 * t));
+			x = fv3;
+		}
+
+		outfile3 << (double)x << "\n";		
+
+		SRC.push_back({ x, 0 });
+	}
+
+	outfile3.close();
+}
+
+void DFT::make_SRC6()
+{
+	int A = 1;
+	int f = 5;
+
+	double si = 3 * pi;
+
+	double dts = 1.0 / 22050;
+	double dk = 1 / dts;
+
+	double t = 0;
+
+	vector <double> temp;
+
+	SRC.clear();
+
+	double x = 0;
+
+	double y;
+
+	ofstream outfile3;
+	outfile3.open("data3.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+		
+		t = i * dts;
+		
+		int j = 2;
+		double fp = double((cos(12 * t * pow(j, 2)) + cos(16 * t * j)) / pow(j, 2));
+		x = x + fp;
+
+		j = 4;
+		fp = double((cos(12 * t * pow(j, 2)) + cos(16 * t * j)) / pow(j, 2));
+		x = x + fp;
+
+		j = 75;
+		fp = double((cos(12 * t * pow(j, 2)) + cos(16 * t * j)) / pow(j, 2));
+		x = x + fp;
+		
+		outfile3 << (double)x << "\n";
+		
+
+		SRC.push_back({ x, 0 });
+
+	}
+
+	outfile3.close();
 }
 
 void DFT::calc_DFT()
@@ -188,19 +436,35 @@ void DFT::TEST() {
 
 }
 
-
 int main() 
 {
 
 	DFT dane;
 
-	dane.make_SRC1();
-	dane.calc_DFT();
-	dane.calc_WA();
+	//dane.make_SRC1();
+	//dane.calc_DFT();
+	//dane.calc_WA();
 
-	dane.calc_IDFT();
+	//dane.calc_IDFT();
 
-	dane.TEST();
+	//dane.TEST();
+
+	DFT dane2;
+	//dane2.make_SRC2();
+	//dane2.calc_DFT();
+	//dane2.calc_WA();
+
+	DFT dane3;
+	//dane3.make_SRC3();
+
+	DFT dane4;
+	//dane3.make_SRC4();
+
+	DFT dane5;
+	//dane3.make_SRC5();
+
+	DFT dane6;
+	//dane3.make_SRC6();
 
 	return 0;
 }
