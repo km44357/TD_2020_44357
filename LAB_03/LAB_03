@@ -138,6 +138,18 @@ void DFT::make_SRC2()
 	}
 
 	outfile2.close();
+
+
+	ofstream outfile3;
+	outfile3.open("time2.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile3 << (double)t << "\n";
+	}
+
+	outfile3.close();
 	
 }
 
@@ -148,7 +160,7 @@ void DFT::make_SRC3()
 
 	double si = 3 * pi;
 	
-	double dts = 1.0 / 22050;
+	this->dts = 1.0 / 2050;
 	double dk = 1 / dts;
 
 	double t = 0;
@@ -181,6 +193,18 @@ void DFT::make_SRC3()
 	}
 
 	outfile3.close();
+
+	ofstream outfile4;
+	outfile4.open("time3.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile4 << (double)t << "\n";
+	}
+
+	outfile4.close();
+
 }
 
 void DFT::make_SRC4()
@@ -190,7 +214,7 @@ void DFT::make_SRC4()
 
 	double si = 3 * pi;
 
-	double dts = 1.0 / 22050;
+	this->dts = 1.0 / 2050;
 	double dk = 1 / dts;
 
 	double t = 0;
@@ -223,6 +247,17 @@ void DFT::make_SRC4()
 	}
 
 	outfile3.close();
+
+	ofstream outfile4;
+	outfile4.open("time3.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile4 << (double)t << "\n";
+	}
+
+	outfile4.close();
 }
 
 void DFT::make_SRC5()
@@ -232,7 +267,7 @@ void DFT::make_SRC5()
 
 	double si = 3 * pi;
 
-	double dts = 1.0 / 22050;
+	this->dts = 1.0 / 2050;
 	double dk = 1 / dts;
 
 	double t = 0;
@@ -276,6 +311,17 @@ void DFT::make_SRC5()
 	}
 
 	outfile3.close();
+
+	ofstream outfile4;
+	outfile4.open("time3.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile4 << (double)t << "\n";
+	}
+
+	outfile4.close();
 }
 
 void DFT::make_SRC6()
@@ -285,7 +331,7 @@ void DFT::make_SRC6()
 
 	double si = 3 * pi;
 
-	double dts = 1.0 / 22050;
+	this->dts = 1.0 / 2050;
 	double dk = 1 / dts;
 
 	double t = 0;
@@ -325,6 +371,17 @@ void DFT::make_SRC6()
 	}
 
 	outfile3.close();
+
+	ofstream outfile4;
+	outfile4.open("time3.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile4 << (double)t << "\n";
+	}
+
+	outfile4.close();
 }
 
 void DFT::calc_DFT()
@@ -371,7 +428,7 @@ void DFT::calc_WA() {
 		outfile1 << (double)mp << "\n";
 
 		//M.push_back(m);
-		Mp.push_back(mp);
+		//Mp.push_back(mp);
 	}
 
 	outfile1.close();
@@ -456,15 +513,23 @@ int main()
 
 	DFT dane3;
 	//dane3.make_SRC3();
+	//dane3.calc_DFT();
+	//dane3.calc_WA();
 
 	DFT dane4;
-	//dane3.make_SRC4();
+	//dane4.make_SRC4();
+	//dane4.calc_DFT();
+	//dane4.calc_WA();
 
 	DFT dane5;
-	//dane3.make_SRC5();
+	//dane5.make_SRC5();
+	//dane5.calc_DFT();
+	//dane5.calc_WA();
 
 	DFT dane6;
-	//dane3.make_SRC6();
+	dane6.make_SRC6();
+	dane6.calc_DFT();
+	dane6.calc_WA();
 
 	return 0;
 }
