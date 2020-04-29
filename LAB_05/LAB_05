@@ -1,0 +1,542 @@
+
+
+#include "pch.h"
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+double pi = 3.14159265359;
+
+
+class LAB5 {
+
+public:
+
+
+	struct cx {
+		double real;
+		double imag;
+	};
+	vector<cx> XA;
+	vector<cx> XP;
+
+	double dts;
+
+	vector <double> SIG;
+	vector <double> SIGA;
+	vector <double> SIGP;
+
+	void SRC_A();
+	void SRC_B();
+	void SRC_C();
+
+	void calc_DFT();
+	void calc_WA();
+};
+
+void LAB5::SRC_A() {
+
+	
+	int fn = 50;
+	double kA = 0.5;
+	double kP = 1.0;
+
+	double si = 3 * pi;
+
+	this->dts = 1.0 / 2050;
+	double dk = 1 / dts;
+
+	double t = 0;
+
+	
+
+	
+
+	double x;
+
+	double y;
+
+	double z;
+
+	ofstream outfile1;
+	outfile1.open("data1.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+	
+		t = i * dts;
+
+		if (0 <= t && t < 0.22) {
+			double fv1 = double((1 - 7 * t) * sin((2 * pi * t * 10) / (t + 0.04)));
+			x = fv1;
+		}
+		if (0.22 <= t && t < 0.7) {
+			double fv2 = double(0.63 * t * sin(125 * t));
+			x = fv2;
+		}
+		if (0.7 <= t && t <= 1.0) {
+			double fv3 = double(pow(t, -0.662) + 0.77 * sin(8 * t));
+			x = fv3;
+		}
+
+		outfile1 << (double)x << "\n";
+
+		SIG.push_back(x);
+		
+	}
+
+	outfile1.close();
+
+	ofstream outfile2;
+	outfile2.open("time1.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile2 << (double)t << "\n";
+	}
+
+	outfile2.close();
+
+
+	ofstream outfile3;
+	outfile3.open("data2.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+
+		y = (kA * SIG[i] + 1) * cos(2 * pi * fn * t);
+
+		outfile3 << (double)y << "\n";
+
+		SIGA.push_back(y);
+
+	}
+
+	outfile3.close();
+
+	ofstream outfile4;
+	outfile4.open("time2.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile4 << (double)t << "\n";
+	}
+
+	outfile4.close();
+
+	ofstream outfile5;
+	outfile5.open("data3.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		
+		z = cos(2 * pi * fn * t + kP * SIG[i]);
+
+		outfile5 << (double)z << "\n";
+
+		SIGP.push_back(z);
+
+	}
+
+	outfile5.close();
+
+	ofstream outfile6;
+	outfile6.open("time3.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile6 << (double)t << "\n";
+	}
+
+	outfile6.close();
+
+
+}
+
+void LAB5::SRC_B() {
+
+
+	int fn = 50;
+	double kA = 7.5;
+	double kP = 1.57;
+
+	double si = 3 * pi;
+
+	this->dts = 1.0 / 2050;
+	double dk = 1 / dts;
+
+	double t = 0;
+
+	
+
+
+
+	double x;
+
+	double y;
+
+	double z;
+
+	ofstream outfile1;
+	outfile1.open("data1.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+
+		if (0 <= t && t < 0.22) {
+			double fv1 = double((1 - 7 * t) * sin((2 * pi * t * 10) / (t + 0.04)));
+			x = fv1;
+		}
+		if (0.22 <= t && t < 0.7) {
+			double fv2 = double(0.63 * t * sin(125 * t));
+			x = fv2;
+		}
+		if (0.7 <= t && t <= 1.0) {
+			double fv3 = double(pow(t, -0.662) + 0.77 * sin(8 * t));
+			x = fv3;
+		}
+
+		outfile1 << (double)x << "\n";
+
+		SIG.push_back(x);
+
+	}
+
+	outfile1.close();
+
+	ofstream outfile2;
+	outfile2.open("time1.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile2 << (double)t << "\n";
+	}
+
+	outfile2.close();
+
+
+	ofstream outfile3;
+	outfile3.open("data2.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+
+		y = (kA * SIG[i] + 1) * cos(2 * pi * fn * t);
+
+		outfile3 << (double)y << "\n";
+
+		SIGA.push_back(y);
+
+	}
+
+	outfile3.close();
+
+	ofstream outfile4;
+	outfile4.open("time2.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile4 << (double)t << "\n";
+	}
+
+	outfile4.close();
+
+	ofstream outfile5;
+	outfile5.open("data3.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+
+		z = cos(2 * pi * fn * t + kP * SIG[i]);
+
+		outfile5 << (double)z << "\n";
+
+		SIGP.push_back(z);
+
+	}
+
+	outfile5.close();
+
+	ofstream outfile6;
+	outfile6.open("time3.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile6 << (double)t << "\n";
+	}
+
+	outfile6.close();
+
+
+}
+
+void LAB5::SRC_C() {
+
+
+	int fn = 50;
+	double kA = 76.0;
+	double kP = 58.0;
+
+	double si = 3 * pi;
+
+	this->dts = 1.0 / 2050;
+	double dk = 1 / dts;
+
+	double t = 0;
+
+	
+
+
+
+	double x;
+
+	double y;
+
+	double z;
+
+	ofstream outfile1;
+	outfile1.open("data1.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+
+		if (0 <= t && t < 0.22) {
+			double fv1 = double((1 - 7 * t) * sin((2 * pi * t * 10) / (t + 0.04)));
+			x = fv1;
+		}
+		if (0.22 <= t && t < 0.7) {
+			double fv2 = double(0.63 * t * sin(125 * t));
+			x = fv2;
+		}
+		if (0.7 <= t && t <= 1.0) {
+			double fv3 = double(pow(t, -0.662) + 0.77 * sin(8 * t));
+			x = fv3;
+		}
+
+		outfile1 << (double)x << "\n";
+
+		SIG.push_back(x);
+
+	}
+
+	outfile1.close();
+
+	ofstream outfile2;
+	outfile2.open("time1.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile2 << (double)t << "\n";
+	}
+
+	outfile2.close();
+
+
+	ofstream outfile3;
+	outfile3.open("data2.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+
+		y = (kA * SIG[i] + 1) * cos(2 * pi * fn * t);
+
+		outfile3 << (double)y << "\n";
+
+		SIGA.push_back(y);
+
+	}
+
+	outfile3.close();
+
+	ofstream outfile4;
+	outfile4.open("time2.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile4 << (double)t << "\n";
+	}
+
+	outfile4.close();
+
+	ofstream outfile5;
+	outfile5.open("data3.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+
+		z = cos(2 * pi * fn * t + kP * SIG[i]);
+
+		outfile5 << (double)z << "\n";
+
+		SIGP.push_back(z);
+
+	}
+
+	outfile5.close();
+
+	ofstream outfile6;
+	outfile6.open("time3.txt", ios::trunc | ios::out);
+	t = 0;
+	for (int i = 0; i < dk; i++) {
+
+		t = i * dts;
+		outfile6 << (double)t << "\n";
+	}
+
+	outfile6.close();
+
+
+}
+
+
+void LAB5::calc_DFT()
+{
+	
+	double re, im;
+
+
+	int nA = SIGA.size();
+
+	for (int i = 0; i < nA; i++) {
+
+		re = 0;
+		im = 0;
+		for (int j = 0; j < nA; j++)
+		{
+
+			re += SIGA[j] * (cos((2 * pi / nA) * i * j)) ;
+
+			im += SIGA[j] * (-sin((2 * pi / nA) * i * j)) ;
+
+		}
+
+		XA.push_back({ re, im });
+
+	}
+
+
+	int nP = SIGP.size();
+	
+	for (int i = 0; i < nP; i++) {
+
+		re = 0;
+		im = 0;
+		for (int j = 0; j < nP; j++)
+		{
+
+			re += SIGP[j] * (cos((2 * pi / nP) * i * j));
+
+			im += SIGP[j] * (-sin((2 * pi / nP) * i * j));
+
+		}
+
+		XP.push_back({ re, im });
+
+	}
+}
+
+void LAB5::calc_WA() {
+
+	double m, mp;
+	double fk;
+	
+
+	int nA = XA.size();
+	double fsnA = (1 / dts) / (double)nA;
+
+	ofstream outfile1;
+	outfile1.open("dataMA.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < nA; i++) {
+
+		m = sqrt(pow(XA[i].real, 2) + pow(XA[i].imag, 2));
+		mp = 10 * log10(m);
+
+		outfile1 << (double)mp << "\n";
+		
+	}
+
+	outfile1.close();
+
+	ofstream outfile2;
+	outfile2.open("freqMA.txt", ios::trunc | ios::out);
+	
+	for (int k = 0; k < nA; k++) {
+
+		fk = double(k * fsnA);
+
+		outfile2 << (double)fk << "\n";
+
+	}
+
+	outfile2.close();
+
+
+	int nP = XP.size();
+	double fsnP = (1 / dts) / (double)nP;
+
+	ofstream outfile3;
+	outfile3.open("dataMP.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < nP; i++) {
+
+		m = sqrt(pow(XP[i].real, 2) + pow(XP[i].imag, 2));
+		mp = 10 * log10(m);
+
+		outfile3 << (double)mp << "\n";
+
+	}
+
+	outfile3.close();
+
+	ofstream outfile4;
+	outfile4.open("freqMP.txt", ios::trunc | ios::out);
+
+	for (int k = 0; k < nP; k++) {
+
+		fk = double(k * fsnP);
+
+		outfile4 << (double)fk << "\n";
+
+	}
+
+	outfile4.close();
+
+}
+
+
+int main()
+{
+   
+	LAB5 data;
+
+	//data.SRC_A();
+
+	//data.SRC_B();
+
+	data.SRC_C();
+
+	data.calc_DFT();
+	data.calc_WA();
+
+
+}
+
