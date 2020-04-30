@@ -40,13 +40,13 @@ public:
 void LAB5::SRC_A() {
 
 	
-	int fn = 50;
-	double kA = 0.5;
+	int fn = 1500;
+	double kA = 0.75;
 	double kP = 1.0;
 
 	double si = 3 * pi;
 
-	this->dts = 1.0 / 2050;
+	this->dts = 1.0 / 250;
 	double dk = 1 / dts;
 
 	double t = 0;
@@ -55,11 +55,11 @@ void LAB5::SRC_A() {
 
 	
 
-	double x;
+	double x = 0;
 
-	double y;
+	double y = 0;
 
-	double z;
+	double z = 0;
 
 	ofstream outfile1;
 	outfile1.open("data1.txt", ios::trunc | ios::out);
@@ -68,18 +68,19 @@ void LAB5::SRC_A() {
 	
 		t = i * dts;
 
-		if (0 <= t && t < 0.22) {
-			double fv1 = double((1 - 7 * t) * sin((2 * pi * t * 10) / (t + 0.04)));
-			x = fv1;
-		}
-		if (0.22 <= t && t < 0.7) {
-			double fv2 = double(0.63 * t * sin(125 * t));
-			x = fv2;
-		}
-		if (0.7 <= t && t <= 1.0) {
-			double fv3 = double(pow(t, -0.662) + 0.77 * sin(8 * t));
-			x = fv3;
-		}
+		
+
+		int j = 2;
+		double fp = double((cos(12 * t * pow(j, 2)) + cos(16 * t * j)) / pow(j, 2));
+		x = x + fp;
+
+		j = 4;
+		fp = double((cos(12 * t * pow(j, 2)) + cos(16 * t * j)) / pow(j, 2));
+		x = x + fp;
+
+		j = 75;
+		fp = double((cos(12 * t * pow(j, 2)) + cos(16 * t * j)) / pow(j, 2));
+		x = x + fp;
 
 		outfile1 << (double)x << "\n";
 
@@ -163,13 +164,13 @@ void LAB5::SRC_A() {
 void LAB5::SRC_B() {
 
 
-	int fn = 50;
+	int fn = 1500;
 	double kA = 7.5;
 	double kP = 1.57;
 
 	double si = 3 * pi;
 
-	this->dts = 1.0 / 2050;
+	this->dts = 1.0 / 250;
 	double dk = 1 / dts;
 
 	double t = 0;
@@ -178,11 +179,11 @@ void LAB5::SRC_B() {
 
 
 
-	double x;
+	double x = 0;
 
-	double y;
+	double y = 0;
 
-	double z;
+	double z = 0;
 
 	ofstream outfile1;
 	outfile1.open("data1.txt", ios::trunc | ios::out);
@@ -191,18 +192,19 @@ void LAB5::SRC_B() {
 
 		t = i * dts;
 
-		if (0 <= t && t < 0.22) {
-			double fv1 = double((1 - 7 * t) * sin((2 * pi * t * 10) / (t + 0.04)));
-			x = fv1;
-		}
-		if (0.22 <= t && t < 0.7) {
-			double fv2 = double(0.63 * t * sin(125 * t));
-			x = fv2;
-		}
-		if (0.7 <= t && t <= 1.0) {
-			double fv3 = double(pow(t, -0.662) + 0.77 * sin(8 * t));
-			x = fv3;
-		}
+		
+
+		int j = 2;
+		double fp = double((cos(12 * t * pow(j, 2)) + cos(16 * t * j)) / pow(j, 2));
+		x = x + fp;
+
+		j = 4;
+		fp = double((cos(12 * t * pow(j, 2)) + cos(16 * t * j)) / pow(j, 2));
+		x = x + fp;
+
+		j = 75;
+		fp = double((cos(12 * t * pow(j, 2)) + cos(16 * t * j)) / pow(j, 2));
+		x = x + fp;
 
 		outfile1 << (double)x << "\n";
 
@@ -286,13 +288,13 @@ void LAB5::SRC_B() {
 void LAB5::SRC_C() {
 
 
-	int fn = 50;
+	int fn = 1500;
 	double kA = 76.0;
 	double kP = 58.0;
 
 	double si = 3 * pi;
 
-	this->dts = 1.0 / 2050;
+	this->dts = 1.0 / 250;
 	double dk = 1 / dts;
 
 	double t = 0;
@@ -301,11 +303,11 @@ void LAB5::SRC_C() {
 
 
 
-	double x;
+	double x = 0;
 
-	double y;
+	double y = 0;
 
-	double z;
+	double z = 0;
 
 	ofstream outfile1;
 	outfile1.open("data1.txt", ios::trunc | ios::out);
@@ -314,18 +316,18 @@ void LAB5::SRC_C() {
 
 		t = i * dts;
 
-		if (0 <= t && t < 0.22) {
-			double fv1 = double((1 - 7 * t) * sin((2 * pi * t * 10) / (t + 0.04)));
-			x = fv1;
-		}
-		if (0.22 <= t && t < 0.7) {
-			double fv2 = double(0.63 * t * sin(125 * t));
-			x = fv2;
-		}
-		if (0.7 <= t && t <= 1.0) {
-			double fv3 = double(pow(t, -0.662) + 0.77 * sin(8 * t));
-			x = fv3;
-		}
+		int j = 2;
+		double fp = double((cos(12 * t * pow(j, 2)) + cos(16 * t * j)) / pow(j, 2));
+		x = x + fp;
+
+		j = 4;
+		fp = double((cos(12 * t * pow(j, 2)) + cos(16 * t * j)) / pow(j, 2));
+		x = x + fp;
+
+		j = 75;
+		fp = double((cos(12 * t * pow(j, 2)) + cos(16 * t * j)) / pow(j, 2));
+		x = x + fp;
+
 
 		outfile1 << (double)x << "\n";
 
@@ -511,6 +513,7 @@ void LAB5::calc_WA() {
 	outfile4.open("freqMP.txt", ios::trunc | ios::out);
 
 	for (int k = 0; k < nP; k++) {
+
 
 		fk = double(k * fsnP);
 
