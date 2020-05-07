@@ -1,0 +1,349 @@
+
+#include "pch.h"
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <cmath>
+#include <string>
+
+using namespace std;
+
+double pi = 3.14159265359;
+
+class LAB6{
+public:
+
+	vector<int> m;
+
+	vector<double> za;
+	vector<double> zf;
+	vector<double> zp;
+
+	void strToBinary(string s);
+	void ASK();
+	void FSK();
+	void PSK();
+	
+	struct cx {
+		double real;
+		double imag;
+	};
+	vector<cx> XA;
+
+	void calc_DFT();
+	void calc_WA();
+
+
+};
+
+void LAB6::strToBinary(string s)
+{
+	int n = s.length();
+
+	
+
+	for (int i = 0; i < n; i++)
+	{
+		int val = int(s[i]);
+
+		vector<int> bin;
+		while (val > 0)
+		{
+			(val % 2) ? bin.push_back(1) : bin.push_back(0);
+			val /= 2;
+		}
+		bin.push_back(0);
+		reverse(bin.begin(), bin.end());
+				
+		int nn = bin.size();
+		int j = 0;
+		for(j = 0; j < nn; j++) 
+		{
+			//cout << endl;		
+			//cout << bin[j];
+			m.push_back(bin[j]);												
+		}
+	}
+
+	ofstream outfile1;
+	outfile1.open("datam.txt", ios::trunc | ios::out);
+	int mm = m.size();
+	for (int i = 0; i < mm; i++)
+	{
+		outfile1 << (int)m[i] << "\n";
+	}
+	outfile1.close();
+	
+	ofstream outfile2;
+	outfile2.open("timem.txt", ios::trunc | ios::out);
+	double t = 0.0;
+	for (int i = 0; i < mm; i++) {
+
+		t = i * 0.1;
+		outfile2 << (double)t << "\n";
+	}
+
+	outfile2.close();
+}
+
+void LAB6::ASK() {
+	double A0 = 0.5;
+	double A1 = 1.0;
+	double N = 10.0;
+	double Tb = 0.1;
+	double f = N * (1/Tb);
+	double p = 0.0;
+
+	int n = m.size();
+
+	double t = 0.0;
+	double x = 0.0;
+	for (int i = 0; i < n; i++) 
+	{
+
+		t = i * Tb;
+		//cout << t << endl;
+		if (m[i] == 0) {
+			
+			x = A0 * sin(2 * pi * f * t + p);
+			cout << x << endl;
+			za.push_back(double(x));
+
+		}
+		if (m[i] == 1) {
+			
+			x = A1 * sin(2 * pi * f * t + p);
+			cout << x << endl;
+			za.push_back(double(x));
+
+		}
+
+	}
+
+
+	ofstream outfile1;
+	outfile1.open("dataza.txt", ios::trunc | ios::out);
+	int mm = za.size();
+	for (int i = 0; i < mm; i++)
+	{
+		outfile1 << (double)za[i] << "\n";
+	}
+	outfile1.close();
+
+	ofstream outfile2;
+	outfile2.open("timeza.txt", ios::trunc | ios::out);
+	 t = 0.0;
+	for (int i = 0; i < mm; i++) {
+
+		t = i * Tb;
+		outfile2 << (double)t << "\n";
+	}
+
+	outfile2.close();
+
+}
+
+void LAB6::FSK() {
+	
+	double A = 1.0;
+	double N = 10.0;
+	double Tb = 0.1;
+	double f0 = (N + 1) * (1 / Tb);
+	double f1 = (N + 2) * (1 / Tb);
+	double p = 0.0;
+
+	int n = m.size();
+
+	double t = 0.0;
+	double x = 0.0;
+	for (int i = 0; i < n; i++)
+	{
+		t = i * Tb;
+		if (m[i] == 0) {
+
+			x = A * sin(2 * pi * f0 * t + p);
+			//cout << x << endl;
+			zf.push_back(double(x));
+
+		}
+		if (m[i] == 1) {
+
+			x = A * sin(2 * pi * f1 * t + p);
+			//cout << x << endl;
+			zf.push_back(double(x));
+
+		}
+
+	}
+
+
+	ofstream outfile1;
+	outfile1.open("datazf.txt", ios::trunc | ios::out);
+	int mm = zf.size();
+	for (int i = 0; i < mm; i++)
+	{
+		outfile1 << (double)zf[i] << "\n";
+	}
+	outfile1.close();
+
+	ofstream outfile2;
+	outfile2.open("timezf.txt", ios::trunc | ios::out);
+	t = 0.0;
+	for (int i = 0; i < mm; i++) {
+
+		t = i * Tb;
+		outfile2 << (double)t << "\n";
+	}
+
+	outfile2.close();
+
+}
+
+void LAB6::PSK() {
+
+	double A = 1.0;
+	double N = 10.0;
+	double Tb = 0.1;
+	double f = N  * (1 / Tb);	
+	double p0 = 0.0;
+	double p1 = pi;
+
+	int n = m.size();
+
+	double t = 0.0;
+	double x = 0.0;
+	for (int i = 0; i < n; i++)
+	{
+		t = i * Tb;
+		if (m[i] == 0) {
+
+			x = A * sin(2 * pi * f * t + p0);
+			//cout << x << endl;
+			zp.push_back(double(x));
+
+		}
+		if (m[i] == 1) {
+
+			x = A * sin(2 * pi * f * t + p1);
+			//cout << x << endl;
+			zp.push_back(double(x));
+
+		}
+
+	}
+
+
+	ofstream outfile1;
+	outfile1.open("datazp.txt", ios::trunc | ios::out);
+	int mm = zp.size();
+	for (int i = 0; i < mm; i++)
+	{
+		outfile1 << (double)zp[i] << "\n";
+	}
+	outfile1.close();
+
+	ofstream outfile2;
+	outfile2.open("timezp.txt", ios::trunc | ios::out);
+	t = 0.0;
+	for (int i = 0; i < mm; i++) {
+
+		t = i * Tb;
+		outfile2 << (double)t << "\n";
+	}
+
+	outfile2.close();
+
+}
+
+
+void LAB6::calc_DFT()
+{
+
+	double re, im;
+
+	vector<double> X = zf;
+
+	int nA = X.size();
+
+	for (int i = 0; i < nA; i++) {
+
+		re = 0;
+		im = 0;
+		for (int j = 0; j < nA; j++)
+		{
+
+			re += X[j] * (cos((2 * pi / nA) * i * j));
+
+			im += X[j] * (-sin((2 * pi / nA) * i * j));
+
+		}
+
+		XA.push_back({ re, im });
+
+	}
+
+
+	
+}
+
+void LAB6::calc_WA() {
+
+	double m, mp;
+	double fk;
+	double Tb = 0.1;
+
+	int nA = XA.size();
+	double fsnA = (1 / Tb) / (double)nA;
+
+	ofstream outfile1;
+	outfile1.open("dataMA.txt", ios::trunc | ios::out);
+
+	for (int i = 0; i < nA; i++) {
+
+		m = sqrt(pow(XA[i].real, 2) + pow(XA[i].imag, 2));
+		mp = 10 * log10(m);
+
+		outfile1 << (double)mp << "\n";
+
+	}
+
+	outfile1.close();
+
+	ofstream outfile2;
+	outfile2.open("freqMA.txt", ios::trunc | ios::out);
+
+	for (int k = 0; k < nA; k++) {
+
+		fk = double(k * fsnA);
+
+		outfile2 << (double)fk << "\n";
+
+	}
+
+	outfile2.close();
+
+
+	
+
+}
+
+
+
+
+int main()
+{
+	LAB6 dane;
+	string s = "aAbBcCdDeEfF";
+	dane.strToBinary(s);
+	dane.ASK();
+	dane.FSK();
+	dane.PSK();
+
+	dane.calc_DFT();
+	dane.calc_WA();
+
+
+
+
+}
+
